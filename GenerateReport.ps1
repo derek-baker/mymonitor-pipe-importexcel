@@ -1,3 +1,4 @@
+# TODO: Support alternative 
 param(
     [Parameter(Mandatory=$false)]
     $inputDataDirectory = "$PSScriptRoot\Logs",
@@ -5,10 +6,11 @@ param(
     [Parameter(Mandatory=$false)]
     $outputReportDirectory = "$PSScriptRoot\Reports"
 )
+
 $ErrorActionPreference = "Stop";
 Set-StrictMode -Version 3
 Import-Module './Functions/GenerateReport.Functions.psm1' -Force 
-Install-Dependency -moduleName 'ImportExcel' -moduleVersion 7.8.4
+Install-Dependency -moduleName 'ImportExcel' -moduleVersion 7.8.4 # https://github.com/dfinke/ImportExcel
 Assert-OperatingSystem
 
 $dataFilePaths = Get-ChildItem $inputDataDirectory -Recurse `
@@ -42,12 +44,20 @@ $distinctApps | ForEach-Object {
     $summaryData += [PSCustomObject]@{Application = $app; Minutes = $totalSeconds / 60}
 }
 
+$reportPathExcel = "$outputReportDirectory\MinutesPerApp_$(Get-Timestamp).xlsx"
+$reportPathCsv = "$outputReportDirectory\MinutesPerApp_$(Get-Timestamp).csv"
+
+# Create file using New-Item to ensure the parent directory is also created.
+@($reportPathExcel, $reportPathCsv) | ForEach-Object {
+    $path = $_
+    New-Item -Path $path -ItemType File -Force | Out-Null
+}
+
 $xAxis = 'Application'
 $yAxis = 'Seconds'
-$minutesPerAppChart = New-ExcelChartDefinition -XRange $xAxis -YRange $yAxis -Title "Minutes per App" -NoLegend
+$chartTitle = 'Minutes per App'
 
-$reportPath = "$outputReportDirectory\MinutesPerApp.xlsx"
-#Create file using New-Item to ensure the parent directory is also created.
-New-Item -Path $reportPath -ItemType File -Force | Out-Null
-$summaryData | Export-Excel $reportPath -AutoNameRange -ExcelChartDefinition $minutesPerAppChart #-Show
-# Export-Excel $xlSourcefile -WorksheetName 'Tab 2' -AutoSize -AutoFilter
+$minutesPerAppChart = New-ExcelChartDefinition -XRange $xAxis -YRange $yAxis -Title $chartTitle -NoLegend
+$summaryData | Export-Excel $reportPathExcel -AutoNameRange #-ExcelChartDefinition $minutesPerAppChart #-Show
+$summaryData | Export-Csv -Path $reportPathCsv -NoTypeInformation 
+# Export-Excel $reportPathExcel -WorksheetName 'Tab 2' -AutoSize -AutoFilter
