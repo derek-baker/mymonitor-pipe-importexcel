@@ -1,0 +1,3 @@
+[submodule "Submodules/MyMonitor"]
+	path = Submodules/MyMonitor
+	url = https://github.com/jdhitsolutions/MyMonitor

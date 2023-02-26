@@ -1,6 +1,3 @@
-# Depends on: 
-#   https://github.com/jdhitsolutions/MyMonitor#   
-#   https://jdhitsolutions.com/blog/powershell/3971/tracking-your-day-with-powershell/
 param(
     [Parameter(Mandatory=$true)]
     $sessionLengthInMinutes,
@@ -9,16 +6,19 @@ param(
     $outputLogsDirectory = "$PSScriptRoot\Logs"
 )
 
-if ([System.Environment]::OSVersion.Platform -eq 'Unix') {throw 'This script only works on Windows.'}
-
+$ErrorActionPreference = "Stop";
 Set-StrictMode -Version 3
-Import-Module './Vendor/MyMonitor/MyMonitor.psm1' -Force
+Import-Module './Submodules/MyMonitor/MyMonitor.psm1' -Force
+Import-Module './Functions/CaptureData.Functions.psm1' -Force 
 
-function Get-Timestamp() {
-   Get-Date -Format "dd-MM-yyyy_HHmmss"
-}
+Assert-OperatingSystem
 
 $data = Get-WindowTime -Minutes $sessionLengthInMinutes
-$data | ConvertTo-Json | Out-File -FilePath "$outputLogsDirectory\AppUsageData$(Get-Timestamp).json"
+$outputLocation = "$outputLogsDirectory\AppUsageData$(Get-Timestamp).json"
 
-[Console]::Beep(2000, 3000)
+#Create file using New-Item to ensure the parent directory is also created.
+New-Item -Path $outputLocation -ItemType File -Force | Out-Null
+
+$data | ConvertTo-Json | Out-File -FilePath $outputLocation -Force
+
+# [Console]::Beep(2000, 3000)
