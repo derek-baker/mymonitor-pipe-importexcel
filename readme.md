@@ -2,7 +2,7 @@
 
 **TLDR**: 
 
-Pipes output of [Jeff Hicks' MyMonitor](https://github.com/jdhitsolutions/MyMonitor) to [Doug Finke's ImportExcel](https://github.com/dfinke/ImportExcel). 
+Pipes output of [Jeff Hicks' MyMonitor](https://github.com/jdhitsolutions/MyMonitor) to [Doug Finke's ImportExcel](https://github.com/dfinke/ImportExcel), for the purpose of generating reports on application usage during recorded sessions.
 
 **Overview**: 
 
@@ -10,7 +10,7 @@ Scripts in this repo can be used on _Windows systems_ to measure which applicati
 
 **Manifest:**
 - `CaptureData.ps1` can be used to record session data on actively used applications.
-- `GenerateReport.ps1` can be used to transform the data and generate Excel-based visualizations of session data. Note that this file does not display properly in LibreOffice Calc or Google Sheets.
+- `GenerateReport.ps1` uses captured data to generate Excel-based visualizations of session data. Note the generated .xlsx file does not display properly in LibreOffice Calc or Google Sheets.
 
 ## Getting Started
 - Clone the repo.

@@ -1,3 +1,6 @@
+$ErrorActionPreference = "Stop";
+Set-StrictMode -Version 3
+
 function Get-Timestamp() {
     Get-Date -Format "dd-MM-yyyy_HHmmss"
 }
