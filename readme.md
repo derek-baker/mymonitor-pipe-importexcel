@@ -6,19 +6,15 @@ Pipes output of [Jeff Hicks' MyMonitor](https://github.com/jdhitsolutions/MyMoni
 
 **Overview**: 
 
-Scripts in this repo can be used on _Windows systems_ to measure which applications were actively used over during a monitored session. If the categories of tasks you perform are paritioned by application, it may be possible to use this data to provide insight into how how much time is spent on each category of task.
+Scripts in this repo can be used on _Windows systems_ to measure which applications were actively used during a monitored session. If the categories of tasks you perform are partitioned by application, it may be possible to use this data to provide insight into how how much time is spent on each category of task.
 
 **Manifest:**
 - `CaptureData.ps1` can be used to record session data on actively used applications.
-- `GenerateReport.ps1` uses captured data to generate Excel-based visualizations of session data. Note the generated .xlsx file does not display properly in LibreOffice Calc or Google Sheets.
+- `GenerateReport.ps1` uses captured data to generate Excel-based visualizations of session data. Note that the generated .xlsx file does not display properly in LibreOffice Calc or Google Sheets.
 
-## Getting Started
+## Quickstart
 - Clone the repo.
 - Open a [Powershell](https://github.com/PowerShell/PowerShell#get-powershell) session and cd to the root of the repo cloned previously.
-- Install dependencies:
-    ``` ps1
-    Install-Module -Name ImportExcel -Scope CurrentUser -RequiredVersion '7.8.4'
-    ```
 - Capture Data:
     ``` ps1
     ./CaptureData.ps1 $sessionLengthInMinutes 1

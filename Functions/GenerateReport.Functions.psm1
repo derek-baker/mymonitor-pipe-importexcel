@@ -2,28 +2,6 @@ $ErrorActionPreference = "Stop";
 Set-StrictMode -Version 3
 Import-Module "$PSScriptRoot\Shared.Functions.psm1"
 
-function Install-Dependency(
-    [Parameter(mandatory=$true)]
-    [string] $moduleName,
-
-    [Parameter(mandatory=$true)]
-    [string] $moduleVersion
-) {
-    # This assumes that $env:PSModulePath contains ~\Documents\WindowsPowershell\Modules
-    if ($null -eq (Get-Module -Name $moduleName -ErrorAction SilentlyContinue)) { # TODO: Also check version?
-        Install-Module $moduleName `
-            -Scope CurrentUser `
-            -RequiredVersion $moduleVersion `
-            -Force `
-            -AllowClobber | Out-Null
-    }
-    
-    # Refresh list of modules.
-    Get-Module -ListAvailable -Refresh | Out-Null
-
-    Import-Module $moduleName -Force
-}
-
 function Get-InputDataFilenames(
     [Parameter(Mandatory=$true)]
     [string] $inputDataDirectory,
@@ -61,7 +39,6 @@ function Select-InputData(
 ) {
     $data = foreach ($log in $logs) {
         foreach ($entry in $log) {
-            Write-Host $entry
             [PSCustomObject]@{
                 Application = $entry.Application
                 Seconds = $entry.Time.TotalSeconds
