@@ -3,7 +3,10 @@ param(
     $inputDataDirectory = "$PSScriptRoot\Logs",
 
     [Parameter(Mandatory=$false)]
-    $outputReportDirectory = "$PSScriptRoot\Reports"
+    $outputReportDirectory = "$PSScriptRoot\Reports",
+
+    [Parameter(Mandatory=$false)]
+    $browserList = @("Edge", "Chrome", "Firefox")
 )
 
 $ErrorActionPreference = "Stop";
@@ -14,12 +17,11 @@ Assert-OperatingSystem
 
 $dataFilePaths = Get-InputDataFilenames -inputDataDirectory $inputDataDirectory
 $logs = Read-Inputfiles -dataFilePaths $dataFilePaths 
-$logEntries = Parse-InputFiles -logs $logs
+$logEntries = Select-InputData -logs $logs
 $distinctApps = $logEntries | Select-Object -ExpandProperty Application -Unique
 
 $summaryData = $distinctApps | ForEach-Object {
     $app = $_
-
     $totalSeconds = 0
     $logEntries `
         | Where-Object { $_.Application -eq $app } `
@@ -27,6 +29,9 @@ $summaryData = $distinctApps | ForEach-Object {
 
     [PSCustomObject]@{Application = $app; Minutes = $totalSeconds / 60}
 }
+
+$browsingData = $logEntries `
+    | Where-Object { $browserList.Contains($_.Application) }
 
 $reportPathExcel = "$outputReportDirectory\MinutesPerApp_$(Get-Timestamp).xlsx"
 $reportPathCsv = "$outputReportDirectory\MinutesPerApp_$(Get-Timestamp).csv"
@@ -41,9 +46,12 @@ $xAxis = 'Application'
 $yAxis = 'Seconds'
 $chartTitle = 'Minutes per App'
 
-$minutesPerAppChart = New-ExcelChartDefinition -XRange $xAxis -YRange $yAxis -Title $chartTitle -NoLegend
-$summaryData | Export-Excel $reportPathExcel -AutoNameRange -ExcelChartDefinition $minutesPerAppChart #-Show
-$summaryData | Export-Csv -Path $reportPathCsv -NoTypeInformation 
+# $minutesPerAppChart = New-ExcelChartDefinition -XRange $xAxis -YRange $yAxis -Title $chartTitle -NoLegend
+# $summaryData | Export-Excel $reportPathExcel -AutoNameRange -ExcelChartDefinition $minutesPerAppChart #-Show
+# $summaryData | Export-Csv -Path $reportPathCsv -NoTypeInformation 
+
+$summaryData 
+$browsingData 
 
 # TODO: Add additional sheet (or separate file) having data on time by webpage in Edge
 # Export-Excel $reportPathExcel -WorksheetName 'Tab 2' -AutoSize -AutoFilter
