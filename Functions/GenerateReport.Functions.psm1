@@ -9,11 +9,10 @@ function Get-InputDataFilenames(
     [Parameter(Mandatory=$false)]
     [string] $fileExtension = '.json'
 ) {
-    $filenames = Get-ChildItem $inputDataDirectory -Recurse `
+    Get-ChildItem $inputDataDirectory -Recurse `
         | Where-Object { $_.Extension -eq $fileExtension } `
-        | ForEach-Object { $_.FullName }
-
-    Write-Output $filenames
+        | ForEach-Object { $_.FullName } `
+        | Write-Output
 }
 
 <#
@@ -23,10 +22,10 @@ function Read-Inputfiles(
     [Parameter(Mandatory=$true)]
     [string[]] $dataFilePaths
 ) {
-    Write-Output $dataFilePaths | ForEach-Object {
+    $dataFilePaths | ForEach-Object {
         $rawJson = Get-Content $_ -Raw
         ConvertFrom-Json -InputObject $rawJson
-    }
+    } | Write-Output
 }
 
 <#
@@ -37,16 +36,16 @@ function Select-InputData(
     [Parameter(Mandatory=$true)]    
     [object[]] $logs
 ) {
-    $data = foreach ($log in $logs) {
+    $logs | ForEach-Object {
+        $log = $_
         foreach ($entry in $log) {
-            [PSCustomObject]@{
+            Write-Output [PSCustomObject]@{
                 Application = $entry.Application
                 Seconds = $entry.Time.TotalSeconds
                 Title = $entry.WindowTitle
             }
         }
-    }
-    Write-Output $data
+    } | Write-Output
 } 
 
 Export-ModuleMember -Function "*"
