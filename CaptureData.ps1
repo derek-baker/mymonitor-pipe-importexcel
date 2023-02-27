@@ -16,7 +16,7 @@ Assert-OperatingSystem
 $data = Get-WindowTime -Minutes $sessionLengthInMinutes
 $outputLocation = "$outputLogsDirectory\AppUsageData$(Get-Timestamp).json"
 
-#Create file using New-Item to ensure the parent directory is also created.
+# Create file using New-Item to ensure any parent directories are also created.
 New-Item -Path $outputLocation -ItemType File -Force | Out-Null
 
 $data | ConvertTo-Json | Out-File -FilePath $outputLocation -Force
