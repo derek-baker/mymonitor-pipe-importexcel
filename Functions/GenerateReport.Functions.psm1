@@ -65,6 +65,7 @@ function Get-SummaryData(
         $logEntries `
             | Where-Object { $_.Application -eq $app } `
             | ForEach-Object { $totalSeconds += $_.Seconds }
+            
         [PSCustomObject] @{
             Application = $app
             Minutes = [System.Math]::Round($totalSeconds / 60, 2)
