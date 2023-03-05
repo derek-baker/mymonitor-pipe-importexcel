@@ -12,8 +12,7 @@ Scripts in this repo can be used on _Windows systems_ to measure which applicati
 
 **Scripts:**
 - `CaptureData.ps1` can be used to record session data on actively used applications, along with some browser data.
-- `GenerateReport.ps1` uses captured data to generate Excel-based visualizations of session data. Note that the generated .xlsx charts do not display properly in LibreOffice Calc.
-    - 
+- `GenerateReport.ps1` uses captured data to generate Excel-based visualizations of session data. Note that the generated .xlsx charts do not display properly in LibreOffice Calc. 
 
 ## Quickstart
 - Clone the repo, and pull submodules: `git clone --recursive <PROJECT_URL>`
