@@ -39,13 +39,37 @@ function Select-InputData(
     $logs | ForEach-Object {
         $log = $_
         foreach ($entry in $log) {
-            Write-Output [PSCustomObject]@{
+           $obj = [PSCustomObject] @{
                 Application = $entry.Application
                 Seconds = $entry.Time.TotalSeconds
                 Title = $entry.WindowTitle
             }
+           Write-Output $obj
         }
     } | Write-Output
 } 
+
+<#   
+    Returns: Array<{Application:string, Minutes:int}>
+#>
+function Get-SummaryData(
+    [Parameter(Mandatory=$true)]
+    [System.String[]] $distinctApps,
+
+    [Parameter(Mandatory=$true)]
+    [PSCustomObject[]] $logEntries # Array<{Application:string, Seconds:int, Title:string}>
+) {
+    $distinctApps | ForEach-Object {
+        $app = $_
+        $totalSeconds = 0
+        $logEntries `
+            | Where-Object { $_.Application -eq $app } `
+            | ForEach-Object { $totalSeconds += $_.Seconds }
+        [PSCustomObject] @{
+            Application = $app
+            Minutes = [System.Math]::Round($totalSeconds / 60, 2)
+        }
+    } | Write-Output
+}
 
 Export-ModuleMember -Function "*"
