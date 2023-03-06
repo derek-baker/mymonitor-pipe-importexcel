@@ -30,6 +30,7 @@ function Read-Inputfiles(
 
 <#
     TODO: If we parse a bunch of logs, we may want something better than O(n^2).
+    Param '$logs': Array<Array<{Application:string, Time:{TotalSeconds:int}, WindowTitle:string}>>
     Returns: Array<{Application:string, Seconds:int, Title:string}>
 #>
 function Select-InputData(
@@ -39,7 +40,7 @@ function Select-InputData(
     $logs | ForEach-Object {
         $log = $_
         foreach ($entry in $log) {
-           $obj = [PSCustomObject] @{
+            $obj = [PSCustomObject] @{
                 Application = $entry.Application
                 Seconds = $entry.Time.TotalSeconds
                 Title = $entry.WindowTitle

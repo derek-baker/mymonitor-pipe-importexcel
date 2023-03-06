@@ -28,6 +28,12 @@ Scripts in this repo can be used on _Windows systems_ to measure which applicati
     ./GenerateReport.ps1 # The report will be written to the working directory.
     ```
 
+## Running The Tests
+- Open a Powershell session
+- Install the current version of Pester: `Install-Module Pester -Scope CurrentUser -RequiredVersion 5.4.0 -SkipPublisherCheck`
+- In the same Powershell session opened above, `cd` to the `Functions` folder found in the root of this repository.
+- Run the tests: `Invoke-Pester`
+
 ## Submodules
 - This project is using a Git Submodule. 
     - See the [.gitmodules file](./.gitmodules) for details.

@@ -1,17 +1,20 @@
 $ErrorActionPreference = "Stop";
 Set-StrictMode -Version 3
 
-function Get-Timestamp() {
-    Get-Date -Format "dd-MM-yyyy_HHmmss"
+function Get-Timestamp(
+    [Parameter(Mandatory=$false)]
+    [string] $timestampFormat = "dd-MM-yyyy_HHmmss"
+) {
+    Get-Date -Format $timestampFormat
 }
 
 function Assert-OperatingSystem(
     [Parameter(Mandatory=$false)]
-    [string] $expectedOs = 'Win32NT'
+    [string[]] $expectedOperatingSystems = @('Win32NT', 'Unix')
 ) {
-    $actualOs = [System.Environment]::OSVersion.Platform
-    if ($actualOs -ne $expectedOs) {
-        throw "This script only works when [System.Environment]::OSVersion.Platform is $expectedOs"
+    $actualOs = [System.Environment]::OSVersion.Platform.ToString()
+    if (-not $expectedOperatingSystems.Contains($actualOs)) {
+        throw "This script only works when [System.Environment]::OSVersion.Platform is one of: $([string]::Join(", ", $expectedOperatingSystems))"
     }
 }
 
