@@ -6,6 +6,9 @@ Pipes output of [Jeff Hicks' MyMonitor](https://github.com/jdhitsolutions/MyMoni
 
 ![Report Example](./Assets/report_example.png)
 
+> [Unix Philosophy:](https://cscie26.dce.harvard.edu/lectures/lect02/6_Extras/ch01s06.html) 
+Write programs to work together. 
+
 **Overview**: 
 
 Scripts in this repo can be used on _Windows systems_ to measure which applications were actively used during a monitored session. If the categories of tasks you perform are partitioned by application, it may be possible to use this data to provide insight into how how much time is spent on each category of task.
@@ -30,7 +33,7 @@ Scripts in this repo can be used on _Windows systems_ to measure which applicati
 
 ## Running The Tests
 - Open a Powershell session
-- Install the current version of Pester: `Install-Module Pester -Scope CurrentUser -RequiredVersion 5.4.0 -SkipPublisherCheck`
+- Install Pester: `Install-Module Pester -Scope CurrentUser -RequiredVersion 5.4.0 -SkipPublisherCheck`
 - In the same Powershell session opened above, `cd` to the `Functions` folder found in the root of this repository.
 - Run the tests: `Invoke-Pester`
 
