@@ -32,7 +32,13 @@ Describe 'Get-InputDataFilenames' {
         # Arrange
         $dataDirectory = "TestDrive:"
         $fileType = "json"
-        $filePath = "$dataDirectory/$([Guid]::NewGuid().ToString()).$fileType"
+        $slash = if ([System.Environment]::OSVersion.Platform.ToString() -eq 'Win32NT') {
+            '\'
+        } else {
+            '/'
+        }
+
+        $filePath = "$dataDirectory$slash$([Guid]::NewGuid().ToString()).$fileType"
         New-Item -Path $filePath -ItemType File | Out-Null
         
         # Act
@@ -115,11 +121,11 @@ Describe 'Get-SummaryData' {
         # Assert
         $actual `
             | Where-Object { $_.Application -eq $slack } `
-            | Select-Object -ExpandProperty Minutes
+            | Select-Object -ExpandProperty Minutes `
             | Should -Be 3
         $actual `
             | Where-Object { $_.Application -eq $atom } `
-            | Select-Object -ExpandProperty Minutes
+            | Select-Object -ExpandProperty Minutes `
             | Should -Be 1
     }
 }
