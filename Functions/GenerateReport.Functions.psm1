@@ -2,6 +2,9 @@ $ErrorActionPreference = "Stop";
 Set-StrictMode -Version 3
 Import-Module "$PSScriptRoot\Shared.Functions.psm1"
 
+<#
+    Returns: Array<string>
+#>
 function Get-InputDataFilenames(
     [Parameter(Mandatory=$true)]
     [string] $inputDataDirectory,
@@ -18,7 +21,7 @@ function Get-InputDataFilenames(
 <#
     Returns: Array<PSCustomObject>
 #>
-function Read-Inputfiles(
+function Read-InputFiles(
     [Parameter(Mandatory=$true)]
     [string[]] $dataFilePaths
 ) {
@@ -51,15 +54,15 @@ function Select-InputData(
 } 
 
 <#   
+    Computes minutes per app.
     Returns: Array<{Application:string, Minutes:int}>
 #>
 function Get-SummaryData(
     [Parameter(Mandatory=$true)]
-    [System.String[]] $distinctApps,
-
-    [Parameter(Mandatory=$true)]
     [PSCustomObject[]] $logEntries # Array<{Application:string, Seconds:int, Title:string}>
 ) {
+    $distinctApps = $logEntries | Select-Object -ExpandProperty Application -Unique
+
     $distinctApps | ForEach-Object {
         $app = $_
         $totalSeconds = 0

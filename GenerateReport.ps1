@@ -20,11 +20,10 @@ if ($null -eq $dataFilePaths) {
     throw "The directory '$dataFilePaths' does not contain any input data files. Aborting."
 }
 
-$logs = Read-Inputfiles -dataFilePaths $dataFilePaths 
+$logs = Read-InputFiles -dataFilePaths $dataFilePaths 
 $logEntries = Select-InputData -logs $logs
-$distinctApps = $logEntries | Select-Object -ExpandProperty Application -Unique
 
-$summaryData = Get-SummaryData -distinctApps $distinctApps -logEntries $logEntries
+$summaryData = Get-SummaryData -logEntries $logEntries
 $browsingData = $logEntries | Where-Object { $browserList.Contains($_.Application) }
 
 $reportPathExcel = "$outputReportDirectory\MinutesPerApp_$(Get-Timestamp).xlsx"

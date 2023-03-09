@@ -1,9 +1,9 @@
 param(
     [Parameter(Mandatory=$true)]
-    [Int32] $sessionLengthInMinutes,
+    [int] $sessionLengthInMinutes,
 
     [Parameter(Mandatory=$false)]
-    [String] $outputLogsDirectory = "$PSScriptRoot\Logs"
+    [string] $outputLogsDirectory = "$PSScriptRoot\Logs"
 )
 
 $ErrorActionPreference = "Stop";
@@ -26,12 +26,13 @@ $job = Start-Job `
 while ($job.State -eq 'Running') {
     [DateTime] $currentTime = Get-Date
     [TimeSpan] $timespan = $currentTime - $jobStartTime
-    [Int32] $secondsPassed = $timespan.Seconds
+    [int] $secondsPassed = $timespan.Seconds
     
+    $progress = (($secondsPassed / ($sessionLengthInMinutes * 60)) * 100)
     Write-Progress `
         -Activity "App Usage Data Capture" `
-        -Status "Progress:" `
-        -PercentComplete (($secondsPassed / ($sessionLengthInMinutes * 60)) * 100)        
+        -Status "Progress: $progress%" `
+        -PercentComplete $progress
 }
 
 $data = Receive-Job -Job $job
