@@ -98,7 +98,7 @@ Describe 'Select-InputData' {
 }
 
 Describe 'Get-SummaryData' {
-    It 'Gets a summary of browsing data' {
+    It 'Gets a summary of app usage data' {
         # Arrange
         $slack = "Slack"
         $atom = "Atom"

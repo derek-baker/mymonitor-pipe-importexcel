@@ -10,7 +10,7 @@ function Get-Timestamp(
 
 function Assert-OperatingSystem(
     [Parameter(Mandatory=$false)]
-    [string[]] $expectedOperatingSystems = @('Win32NT', 'Unix')
+    [string[]] $expectedOperatingSystems = @('Win32NT', 'Unix') # <= Including 'Unix' to allow running tests on Linux build agents.
 ) {
     $actualOs = [System.Environment]::OSVersion.Platform.ToString()
     if (-not $expectedOperatingSystems.Contains($actualOs)) {

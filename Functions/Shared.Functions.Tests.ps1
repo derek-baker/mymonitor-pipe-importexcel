@@ -12,8 +12,11 @@ BeforeAll {
 
 Describe 'Get-Timestamp' {
     It 'Returns a timestamp that can be used for a file.' {
+        # Act
         $timestamp = Get-Timestamp
         $newFile = New-Item "$testDrive\tmp_$timestamp.tmp" 
+
+        # Assert
         [string]::IsNullOrWhiteSpace($timestamp) | Should -Be $false
         $newFile | Should -Not -Be $null   
     }
@@ -21,20 +24,31 @@ Describe 'Get-Timestamp' {
 
 Describe 'Assert-OperatingSystem' {
     It 'Throws when an unexpected operating system is detected.' {
+        # Act
         $actual = { Assert-OperatingSystem -expectedOperatingSystems @('Lunix') }
+
+        # Assert
         $actual | Should -Throw
     }
     It 'Does not throw when an expected operating system is detected.' {
+        # Act
         $actual = { Assert-OperatingSystem }
+
+        # Assert
         $actual | Should -Not -Throw
     }
 }
 
 Describe 'Initialize-FoldersInPath' {
     It 'Creates folders in path if they do not exist.' {
+        # Arrange
         $dir1 = 'new1'
         $dir2 = 'new2'
+
+        #Act
         Initialize-FoldersInPath -path "$testDrive\$dir1\$dir2"
+
+        # Assert
         Test-Path -Path "$testDrive\$dir1" | Should -Be $true
         Test-Path -Path "$testDrive\$dir1\$dir2" | Should -Be $true
     }
