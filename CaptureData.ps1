@@ -14,7 +14,7 @@ Assert-OperatingSystem
     param($minutes, $workingDir) 
     Import-Module "$workingDir/Submodules/MyMonitor/MyMonitor.psm1" -Force
     Import-Module "$workingDir/Functions/CaptureData.Functions.psm1" -Force
-    Get-WindowTime -Minutes $minutes 
+    Get-WindowTime -Minutes $minutes | Write-Output
 }
 [DateTime] $jobStartTime = Get-Date 
 
@@ -28,7 +28,7 @@ while ($job.State -eq 'Running') {
     [TimeSpan] $timespan = $currentTime - $jobStartTime
     [int] $secondsPassed = $timespan.Seconds
     
-    $progress = (($secondsPassed / ($sessionLengthInMinutes * 60)) * 100)
+    $progress = [int](($secondsPassed / ($sessionLengthInMinutes * 60)) * 100)
     Write-Progress `
         -Activity "App Usage Data Capture" `
         -Status "Progress: $progress%" `

@@ -20,7 +20,7 @@ if ($null -eq $dataFilePaths) {
     throw "The directory '$dataFilePaths' does not contain any input data files. Aborting."
 }
 
-$logs = Read-InputFiles -dataFilePaths $dataFilePaths 
+$logs = Read-InputFiles -dataFilePaths $dataFilePaths
 $logEntries = Select-InputData -logs $logs
 
 $summaryData = Get-SummaryData -logEntries $logEntries
