@@ -1,5 +1,7 @@
 # mymonitor-pipe-importexcel
 
+![Pwsh tests](https://github.com/derek-baker/mymonitor-pipe-importexcel/actions/workflows/pwsh-tests.yaml/badge.svg)
+
 **TLDR**: 
 
 Pipes output of [Jeff Hicks' MyMonitor](https://github.com/jdhitsolutions/MyMonitor) to [Doug Finke's ImportExcel](https://github.com/dfinke/ImportExcel), for the purpose of generating reports on application usage during recorded sessions.
