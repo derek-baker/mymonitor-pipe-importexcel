@@ -21,7 +21,7 @@ Scripts in this repo can be used on _Windows systems_ to measure which applicati
 
 ## Quickstart
 - Clone the repo, and pull submodules: `git clone --recursive <PROJECT_URL>`
-- If you clone before reading the above instructions, you'll need to run this command to initialize the submodule: `git submodule update --init --recursive`
+- If you cloned before reading the above instructions, you'll need to run this command to initialize the submodule: `git submodule update --init --recursive`
 - Open a [Powershell](https://github.com/PowerShell/PowerShell#get-powershell) session and run the following command `Install-Module ImportExcel -Scope CurrentUser -RequiredVersion 7.8.4`
 - In the same Powershell session opened above, `cd` to the root of the repo cloned previously.
 - Capture Data:
